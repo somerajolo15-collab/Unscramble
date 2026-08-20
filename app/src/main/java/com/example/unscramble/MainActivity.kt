@@ -34,27 +34,34 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GameScreen() {
 
-    // Phase 2: Store the user's answer
+    // Store the user's answer
     var userAnswer by remember {
         mutableStateOf("")
     }
 
-    // Phase 4: List of possible words
+    // List of possible words
     val words = listOf(
         "CAT",
         "DOG",
         "BOOK"
     )
 
-    // Phase 4: Keep track of the current word
+    // Keep track of the current word
     var currentWordIndex by remember {
         mutableStateOf(0)
     }
 
-    // Get the current answer from the list
+    // The correct answer
     val correctAnswer = words[currentWordIndex]
 
-    // Phase 3: Store the player's score
+    // The scrambled word shown to the player
+    var scrambledWord by remember {
+        mutableStateOf(
+            words[0].toList().shuffled().joinToString("")
+        )
+    }
+
+    // Player's score
     var score by remember {
         mutableStateOf(0)
     }
@@ -70,9 +77,8 @@ fun GameScreen() {
             fontSize = 30.sp
         )
 
-        // Phase 4: Display the current word
         Text(
-            text = correctAnswer,
+            text = scrambledWord,
             fontSize = 40.sp
         )
 
@@ -98,6 +104,11 @@ fun GameScreen() {
                     if (currentWordIndex < words.size - 1) {
                         currentWordIndex++
                         userAnswer = ""
+
+                        scrambledWord = words[currentWordIndex]
+                            .toList()
+                            .shuffled()
+                            .joinToString("")
                     }
                 }
             }
