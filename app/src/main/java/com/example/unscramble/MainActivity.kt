@@ -10,6 +10,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
@@ -34,6 +36,8 @@ fun GameScreen() {
 
     val viewModel: GameViewModel = viewModel()
 
+    val uiState by viewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,7 +50,7 @@ fun GameScreen() {
         )
 
         Text(
-            text = viewModel.words[viewModel.currentWordIndex],
+            text = uiState.scrambledWord,
             fontSize = 40.sp
         )
 
@@ -55,35 +59,21 @@ fun GameScreen() {
         )
 
         OutlinedTextField(
-            value = viewModel.userAnswer,
-            onValueChange = {
-                viewModel.userAnswer = it
-            },
+            value = uiState.userAnswer,
+            onValueChange = {},
             label = {
                 Text("Enter your answer")
             }
         )
 
         Button(
-            onClick = {
-                val correctAnswer =
-                    viewModel.words[viewModel.currentWordIndex]
-
-                if (viewModel.userAnswer == correctAnswer) {
-                    viewModel.score++
-
-                    if (viewModel.currentWordIndex < viewModel.words.size - 1) {
-                        viewModel.currentWordIndex++
-                        viewModel.userAnswer = ""
-                    }
-                }
-            }
+            onClick = {}
         ) {
             Text("SUBMIT")
         }
 
         Text(
-            text = "Score: ${viewModel.score}"
+            text = "Score : ${uiState.score}"
         )
     }
 }
