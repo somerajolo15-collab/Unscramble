@@ -34,12 +34,19 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GameScreen() {
 
-    // Phase 2: State for the user's answer
+    // Phase 2: Store the user's answer
     var userAnswer by remember {
         mutableStateOf("")
     }
 
-    // Phase 1: Basic UI
+    // Phase 3: Store the correct answer
+    val correctAnswer = "CAT"
+
+    // Phase 3: Store the player's score
+    var score by remember {
+        mutableStateOf(0)
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,7 +67,6 @@ fun GameScreen() {
             text = "Unscramble the word!"
         )
 
-        // Phase 2: Working input field
         OutlinedTextField(
             value = userAnswer,
             onValueChange = {
@@ -71,16 +77,18 @@ fun GameScreen() {
             }
         )
 
-        // Phase 1: Button exists, but doesn't work yet
         Button(
-            onClick = { }
+            onClick = {
+                if (userAnswer == correctAnswer) {
+                    score++
+                }
+            }
         ) {
             Text("SUBMIT")
         }
 
-        // Phase 1: Score is still hardcoded
         Text(
-            text = "Score: 0"
+            text = "Score: $score"
         )
     }
 }
